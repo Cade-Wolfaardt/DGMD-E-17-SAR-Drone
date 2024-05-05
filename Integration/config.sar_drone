@@ -1,0 +1,22 @@
+# Default the base URL
+api_server=http://127.0.0.1
+sim_server=1.13.181.58
+
+# Default API server ports
+DQN_port=:5000
+AStar_port=:5010
+RRT_port=:5020
+
+# ArduPilot defaults
+transport=udp:
+sim_port=:14451
+
+# start and goal geo coordinates + altitude
+start=(42.355118,-71.071305,6)
+goal=(42.355280,-71.070911,26.5)
+
+# obstacle list (obstacles are all represented as spheres in space)
+# format: (latitude, longitude, altitude), radius)
+# altitude and raidius unit in meters
+# 
+obstacles=[((42.355200,-71.071000,10.0),5), ((42.355150,-71.071200,5.0),2)]
