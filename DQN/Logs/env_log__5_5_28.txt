@@ -1,0 +1,10 @@
+
+World Data:
+-----------------------------------------------
+World Size (x, y, z): (10000, 10000, 10000)
+Step Length: 10
+Start Point: (5000, 5000, 5000)
+Goal Point: (5360, 5650, 5410)
+Number of Assets: 0
+-----------------------------------------------
+Asset Centers and Heights:
