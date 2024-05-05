@@ -107,7 +107,7 @@ env.render()
 This code snippet creates an environment with 60 assets randomly placed within it and visualizes the environment.
 
 Loading an Environment:
-```
+```python
 from environment import World
 
 # Create a placeholder environment
