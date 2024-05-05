@@ -97,7 +97,7 @@ Output:
 ## World
 
 Creating a Random Environment and Visualizing It
-```
+```python
 from environment import World
 from utils import goal, start_position
 
@@ -109,11 +109,23 @@ This code snippet creates an environment with 60 assets randomly placed within i
 Loading an Environment:
 ```
 from environment import World
-from utils import goal, start_position
 
-# Create a placeholder environment with verbosity of 0
-env = World(goal, start_position, 0)
+# Create a placeholder environment
+env = World()
 # Load environment from environment log with id 5_5_28
 env.load_env('5_5_28')
 ```
 This code snippet demonstrates how to load an environment from an environment log file with the specified ID. Please note that the environment log file should follow the naming convention 'env_log__XX_XX_XX.txt' for this operation to work correctly.
+
+Rendering a Mission From a Position log:
+```python
+from environment import World
+
+# Create a placeholder environment
+env = World()
+# Load environment from environment log with id 5_5_28
+env.load_env('5_5_28')
+# Render the mission path
+env.render_path()
+```
+This code snippet demonstrates how to render a mission path from a position log using the `World` class. It loads the environment from the specified log and then renders the mission path for visualization.
