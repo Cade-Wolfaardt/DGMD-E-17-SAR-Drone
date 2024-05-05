@@ -1,6 +1,20 @@
+# Classes
+
 ## Cylinder
 
 The `Cylinder` class is designed to model cylinder-shaped assets within the simulation environment. It features three essential attributes: radius, center, and height. The center attribute represents the Cartesian coordinate of the cylinder's base center, height denotes the cylinder's height, and radius specifies the cylinder's radius.
+
+#### Usage
+
+Create a `Cylinder`:
+```python
+# Creating a Cylinder
+cylinder = Cylinder(
+  radius=10.5,
+  center=(100, 150, 0),
+  height=23.5
+)
+```
 
 ## State
 
@@ -51,6 +65,35 @@ tensor([  0.,   0.,   0.,   0.,   0., 100.])
 
 The `Discrete` class is a subclass of set and represents a discrete set of elements. It includes an additional attribute `n`, which signifies the number of elements in the set. This class plays a crucial role in defining the action space of the environment.
 
+Creating a `Discrete` instance:
+```python
+# Creating an empty Discrete instance
+empty_discrete = Discrete()
+
+# Creating a Discrete instance
+discrete = Discrete({0, 1, 2, 3, 4, 5, 6})
+
+# Casting a set to Discrete
+orginal_set = {1, 2, 3}
+discrete_cast = Discrete(original_set)
+```
+
+Obtaining the size of the discrete set:
+```python
+# Create an action space as an instance of Discrete
+action_space = Discrete({0, 1, 2, 3, 4, 5, 6})
+
+# Obtain length
+length = action_space.n
+
+# Output results
+print(action_space, length)
+```
+
+Output:
+```
+(Discrete({0, 1, 2, 3, 4, 5, 6}), 7)
+```
 ## World
 
 ## Drone
