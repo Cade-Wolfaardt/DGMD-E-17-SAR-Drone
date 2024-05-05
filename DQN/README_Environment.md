@@ -1,5 +1,7 @@
 ## Cylinder
 
+The `Cylinder` class is designed to model cylinder-shaped assets within the simulation environment. It features three essential attributes: radius, center, and height. The center attribute represents the Cartesian coordinate of the cylinder's base center, height denotes the cylinder's height, and radius specifies the cylinder's radius.
+
 ## State
 
 The `State` class encapsulates a state dictionary that defines the environment's current state. It offers additional functionalities such as processing and filtering out unnecessary entries from the state dictionary. Moreover, it facilitates converting the dictionary into a `torch.Tensor`, which is essential for utilizing it within PyTorch models. This class relies on the `torch` library for converting the dictionary to a `torch.Tensor`.
@@ -46,6 +48,8 @@ tensor([  0.,   0.,   0.,   0.,   0., 100.])
 ```
 
 ## Discrete
+
+The `Discrete` class is a subclass of set and represents a discrete set of elements. It includes an additional attribute `n`, which signifies the number of elements in the set. This class plays a crucial role in defining the action space of the environment.
 
 ## World
 
