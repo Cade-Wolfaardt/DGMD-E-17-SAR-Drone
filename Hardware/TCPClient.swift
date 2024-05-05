@@ -1,6 +1,6 @@
 //
 //  TCPClient.swift
-//  DjiMobileSdkTest2
+//  DjiMobileSdkTest
 //
 //  Fenton Chance - 03.23.24
 //
