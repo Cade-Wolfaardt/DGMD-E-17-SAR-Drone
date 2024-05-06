@@ -1,0 +1,1 @@
+Two example logs have been provided, the `env_log` stores the general information of the environment and is used to load environments. The `position_log` stores the different cartesian positions of the drone throughout the mission so that rendering can be done.

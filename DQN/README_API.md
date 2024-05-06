@@ -2,7 +2,7 @@
 
 Open two terminals, one to run the API and another to access the API. If you are using a virtual environment make sure to activate it in both terminals. In one terminal execute the following:
 ```
-python v5_demo_api.py
+python api_server.py
 ```
 Executing the code snippet will produce the following output.
 ```
@@ -23,5 +23,5 @@ base_url = 'http://127.0.0.1:5000'
 
 You can then proceed to execute the following command in the second terminal.
 ```
-python v5_demo_api_test.py
+python api_client.py
 ```
