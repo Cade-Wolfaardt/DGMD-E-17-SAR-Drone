@@ -8,7 +8,7 @@ The `DQN` class defines a DQN feed forward network with 2 hidden layers and spec
 
 ## DQN3
 
-The `DQN` class defines a DQN feed forward network with 3 hidden layers and specifiable amounts of neurons in the input, hidden, and output layers.
+The `DQN3` class defines a DQN feed forward network with 3 hidden layers and specifiable amounts of neurons in the input, hidden, and output layers.
 
 ## Hyperparameters
 
