@@ -15,25 +15,25 @@ Each component is visually separated using boxes, and interactions are demonstra
 
 Before running the animation, ensure you have Manim installed. Manim can be installed via pip:
 
-```pip install manim
+pip install manim
 
 ## Usage
 To run the animation, use the following command:
 
-```manim -p -ql data_flow_animation.py ServerArchitecture
+manim -p -ql data_flow_animation.py ServerArchitecture
 
 This command will render the scene in low quality for quick preview. For higher quality, replace -ql with -qh.
 
-##Files
+## Files
 data_flow_animation.py: Contains the Manim script for the animation.
 drone.svg: Contains vector graph of the drone used in the animation.
 requirements.txt: required library
 
-##Contributing
+## Contributing
 Contributions to this script are welcome! Please fork the repository and submit a pull request with your additions.
 
-##License
+## License
 This project is released under the MIT License. See the LICENSE file for more details.
 
-##Acknowledgements
+## Acknowledgements
 Thanks to the Manim community for providing an excellent tool for mathematical and system visualizations.
