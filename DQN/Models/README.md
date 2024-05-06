@@ -1,1 +1,1 @@
-
+This folder houses different trained DQN models with varying architectures, the networks archetecures (hidden layers and neurons) are saved as a constant in two scripts (`eval.py` and `path_planner.py`). The most robust model achieved has the prefix `final_DQN`.
