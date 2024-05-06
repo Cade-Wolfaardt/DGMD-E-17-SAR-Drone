@@ -15,19 +15,19 @@ Each component is visually separated using boxes, and interactions are demonstra
 
 Before running the animation, ensure you have Manim installed. Manim can be installed via pip:
 
-```bash
-pip install manim
+```pip install manim
 
 ## Usage
 To run the animation, use the following command:
 
-```python
-manim -p -ql server_architecture.py ServerArchitecture
+```manim -p -ql data_flow_animation.py ServerArchitecture
 
 This command will render the scene in low quality for quick preview. For higher quality, replace -ql with -qh.
 
 ##Files
-server_architecture.py: Contains the Manim script for the animation.
+data_flow_animation.py: Contains the Manim script for the animation.
+drone.svg: Contains vector graph of the drone used in the animation.
+requirements.txt: required library
 
 ##Contributing
 Contributions to this script are welcome! Please fork the repository and submit a pull request with your additions.
