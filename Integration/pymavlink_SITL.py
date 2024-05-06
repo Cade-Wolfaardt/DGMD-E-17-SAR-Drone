@@ -33,7 +33,7 @@ def clear_mission(vehicle) -> None:
             break
 
 
-# Read in mission file 
+# Read in mission file
 def read_mission_file(filename: str) -> list:
     with open(filename, 'r') as file:
         first_line = file.readline()
@@ -176,11 +176,11 @@ def command_ack(vehicle, cmd_id):
                 return False
 
 
-def run_mission(connection_string: str, mission_file: str) -> None:
+def run_mission(connection_string: str, mission_cmd) -> None:
     # Mission Preparation
     copter = connect_vehicle(connection_string)
     clear_mission(copter)
-    mission_cmds = read_mission_file(mission_file)
+#    mission_cmds = read_mission_file(mission_file)
     waypoints = upload_mission(copter, mission_cmds)
 
     while not check_gps_fix(copter):

@@ -1,5 +1,7 @@
 import requests
 import os
+import ast
+import time
 import argparse
 import pymavlink_SITL as sitl
 import logging
@@ -50,7 +52,7 @@ def set_start(start: tuple, goal: tuple) -> None:
     # Construct the URL with start and goal parameters
     extension = '/assign-start-goal?start={}_{}_{}&goal={}_{}_{}'
     url = configs['api_server'] + configs['DQN_port'] + extension.format(*start, *goal)
-    logging.debug(f"DQN URL: {url}")
+    logging.debug(f"Main DQN Request: {url}")
 
     # Send a GET request to the server API
     response = requests.get(url)
@@ -175,34 +177,43 @@ def main():
     logging.info(f"Mission File: {mission_file}")
     logging.info(f"Path Planning Type: {path_planning_type}")
 
+    # start and goal
+    start = ast.literal_eval(configs['start'])
+    goal = ast.literal_eval(configs['goal'])
+    obstacles = ast.literal_eval(configs['obstacles'])
+
+    # Time the algorithms
+
+    start_time = time.time()
+
     if mission_file:
         mission_plan = sitl.read_mission_file(mission_file)
+        print(mission_plan)
     else:
         if path_planning_type == "DQN":
             # Request DQN mission plan
-            mission_plan = call_DQN_API(configs['start'], configs['goal'])
+            mission_plan = call_DQN_API(start, goal)
+            print(mission_plan)
         elif path_planning_type == "RRT":
             # Request RRT mission plan
-            mission_plan = call_rrt_endpoint(configs['start'], configs['goal'], configs['obstacles'])
+            mission_plan = call_rrt_endpoint(start, goal, obstacles)
+            [print(wp) for wp in mission_plan]
         elif path_planning_type == "A*":
             # Request A* mission plan
             print("Sorry! A* Algorithm NOT implemented yet")
-#            mission_plan = call_astar_endpoint(configs['start'], configs['goal'], configs['obstacles'])
+#            mission_plan = call_astar_endpoint(start, goal, obstacles)
         else:
             print(f"ERROR: Unknown Path Planning Type {path_planning_type}")
             logging.error(f"ERROR: Unknown Path Planning Type {path_planning_type}")
             raise Exception('Path planning type not supported')
 
-    # Display Mission Plan
-    # [print(wp) for wp in mission_plan]
-    print(mission_plan)
+    # Display time used to generate Mission Plan
+    end_time = time.time()
+    execution_time = end_time - start_time
+    logging.info(f"Mission Plan Generated in {execution_time:.3f} sec using {path_planning_type}")
 
     # Execute Mission
     sitl.run_mission(connection_string, mission_plan)
-
-# A* algorithm not working yet. Future development
-#    astar_mission_plan = call_astar_endpoint(start, goal, obstacles)
-#    rrt_mission_plan = call_rrt_endpoint(start, goal, obstacles)
 
 
 if __name__ == '__main__':
