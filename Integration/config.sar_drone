@@ -1,6 +1,6 @@
-# Default the base URL
+# Web address for the DQN Flask server and RRT FastAPI server
+# These two services must be on the same IP address
 api_server=http://127.0.0.1
-sim_server=1.13.181.58
 
 # Default API server ports
 DQN_port=:5000
@@ -8,15 +8,20 @@ AStar_port=:5010
 RRT_port=:5020
 
 # ArduPilot defaults
+# IP address of the server running ArduPilot and QGroundControl
+sim_server=1.13.181.58
+# transport type: either udp or tcp
 transport=udp:
+# Default port to upload mission and control drone with MAVLink commands
 sim_port=:14451
 
-# start and goal geo coordinates + altitude
-start=(42.355118,-71.071305,6)
-goal=(42.355280,-71.070911,26.5)
+# Default start and goal geo coordinates + altitude
+# Change for different missions
+start=(42.355118, -71.071305, 6)
+goal=(42.355280, -71.070911, 26.5)
 
 # obstacle list (obstacles are all represented as spheres in space)
 # format: (latitude, longitude, altitude), radius)
 # altitude and raidius unit in meters
 # 
-obstacles=[((42.355200,-71.071000,10.0),5), ((42.355150,-71.071200,5.0),2)]
+obstacles=[((42.355200, -71.071000, 10.0), 5), ((42.355150, -71.071200, 5.0), 2)]

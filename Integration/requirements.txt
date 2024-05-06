@@ -1,0 +1,5 @@
+numpy
+pandas
+matplotlib
+pymavlink
+argparse
