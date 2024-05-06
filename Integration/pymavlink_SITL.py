@@ -34,7 +34,7 @@ def clear_mission(vehicle) -> None:
 
 
 # Read in mission file
-def read_mission_file(filename: str) -> list:
+def read_mission_file(filename) -> list:
     with open(filename, 'r') as file:
         first_line = file.readline()
         if not first_line.startswith('QGC WPL 110'):
@@ -52,7 +52,7 @@ def read_mission_file(filename: str) -> list:
 
 
 # Upload mission MAVLink command list to drone
-def upload_mission(vehicle, mission):
+def upload_mission(vehicle, mission) -> int:
     logging.debug(mission)
     mission_items = []
 
@@ -176,7 +176,7 @@ def command_ack(vehicle, cmd_id):
                 return False
 
 
-def run_mission(connection_string: str, mission_cmd) -> None:
+def run_mission(connection_string: str, mission_cmds: list) -> None:
     # Mission Preparation
     copter = connect_vehicle(connection_string)
     clear_mission(copter)
@@ -229,4 +229,6 @@ if __name__ == "__main__":
     print(f"Mission Data: {mission_file}")
     print(f"Path Planning Type: {ppmodel}")
 
-    run_mission(connection_string, read_mission_file(mission_file))
+    mission_cmds = read_mission_file(mission_file)
+    logging.debug(f"Mission Commands: {mission_cmds}")
+    run_mission(connection_string, mission_cmds)

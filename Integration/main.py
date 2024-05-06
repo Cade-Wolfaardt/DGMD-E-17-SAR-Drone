@@ -183,9 +183,9 @@ def main():
     obstacles = ast.literal_eval(configs['obstacles'])
 
     # Time the algorithms
-
     start_time = time.time()
 
+    # Generate Mission Plans
     if mission_file:
         mission_plan = sitl.read_mission_file(mission_file)
         print(mission_plan)
@@ -213,7 +213,11 @@ def main():
     logging.info(f"Mission Plan Generated in {execution_time:.3f} sec using {path_planning_type}")
 
     # Execute Mission
+    start_time = time.time()
     sitl.run_mission(connection_string, mission_plan)
+    end_time = time.time()
+    execution_time = end_time - start_time
+    logging.info(f"Mission Executed in {execution_time:.3f} sec using {path_planning_type}")
 
 
 if __name__ == '__main__':
