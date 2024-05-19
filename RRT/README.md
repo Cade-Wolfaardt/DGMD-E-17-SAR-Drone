@@ -8,8 +8,9 @@ The RRT algorithm helps in navigating complex environments by efficiently search
 
 ## Files
 
-- `rrt.py`: Contains the RRT algorithm implementation.
-- `utils.py`: Helper functions that support the RRT algorithm.
+- `rrt_3d_fastapi.py`: Contains the RRT algorithm implementation.
+- `path_planning_utils.py`: Helper functions that support the RRT algorithm.
+
 
 ## Requirements
 
@@ -20,5 +21,5 @@ pip install -r requirements.txt
 ## Usage
 To run the RRT FastAPI Server
 
-	uvicorn astar_3d_fastapi:app --host 0.0.0.0 --port 5010 --reload
+	uvicorn rrt_3d_fastapi:app --host 0.0.0.0 --port 5020 --reload
 

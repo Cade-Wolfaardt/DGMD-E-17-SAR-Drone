@@ -16,7 +16,7 @@ def connect_vehicle(connection_string):
     print('Connecting to vehicle on: %s' % connection_string)
 
     # Connect to SITL output using the appropriate IP and port
-    vehicle = mavutil.mavlink_connection(connection_string)
+    vehicle = mavutil.mavlink_connection(connection_string, source_system=255, source_component=0)
     vehicle.wait_heartbeat()
     print(f"Heartbeat from system {vehicle.target_system} component {vehicle.target_component}")
 
@@ -84,9 +84,6 @@ def upload_mission(vehicle, mission):
 
 # Arm and take off the drone
 def arm_and_takeoff(vehicle, target_altitude):
-    # Switch to GUIDED mode
-    set_mode(vehicle, "GUIDED")
-
     # Arm vehicle before attempting to take off
     print("Arming motors")
     vehicle.mav.command_long_send(
@@ -176,22 +173,31 @@ def command_ack(vehicle, cmd_id):
                 return False
 
 
-def run_mission(connection_string: str, mission_cmd) -> None:
-    # Mission Preparation
+# Launch Mission Execution Sequence
+def run_mission(connection_string: str, mission_cmds) -> None:
+    # 1. Mission Preparation
     copter = connect_vehicle(connection_string)
     clear_mission(copter)
+#
+    # 2. Upload mission
 #    mission_cmds = read_mission_file(mission_file)
     waypoints = upload_mission(copter, mission_cmds)
 
+    # 3. Pre-takeoff check
     while not check_gps_fix(copter):
         time.sleep(2)
 
-    # Mission Execution
-    arm_and_takeoff(copter, 10)  # initial height 20m
+    # 4. Switch to GUIDED mode
+    set_mode(copter, "GUIDED")
+
+    # 5. Arm and Take-off
+    arm_and_takeoff(copter, 10)  # initial height 10m
     time.sleep(5)  # let the copter catches its breath, before ..
+
+    # 6. Switch to Autonomous flight
     set_mode(copter, "AUTO")  # execute the mission
 
-    # Monitor mission progress
+    # 7. Monitor mission progress
     current_wp = 0
     while True:
         next_wp = copter.recv_match(type='MISSION_CURRENT', blocking=True, timeout=5).seq
@@ -206,9 +212,14 @@ def run_mission(connection_string: str, mission_cmd) -> None:
         if next_wp == waypoints - 1:
             # Land and finish
             land_vehicle(copter)
+
+            # How 
             print("Mission Completed")
             break
         time.sleep(5)
+    
+    # 8. Mission Accomplished
+    copter.close()
 
 
 # Protected main

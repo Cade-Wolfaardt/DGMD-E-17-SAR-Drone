@@ -51,7 +51,7 @@ def set_start(start: tuple, goal: tuple) -> None:
 
     # Construct the URL with start and goal parameters
     extension = '/assign-start-goal?start={}_{}_{}&goal={}_{}_{}'
-    url = configs['api_server'] + configs['DQN_port'] + extension.format(*start, *goal)
+    url = configs['api_server'] + ":" + configs['DQN_port'] + extension.format(*start, *goal)
     logging.debug(f"Main DQN Request: {url}")
 
     # Send a GET request to the server API
@@ -77,7 +77,7 @@ def get_path_from_api() -> str:
     """
     # Make a GET request to the API endpoint
 #    response = requests.get(api_server + DQN_port + '/get-path')
-    response = requests.get(configs['api_server'] + configs['DQN_port'] + '/get-path') 
+    response = requests.get(configs['api_server'] + ":" + configs['DQN_port'] + '/get-path') 
 
     # Check if the request was successful (status code 200)
     if response.status_code == 201:
@@ -106,8 +106,7 @@ def call_DQN_API(start, goal):
 
 # Call the A* FastAPI
 def call_astar_endpoint(start, goal, obstacles):
-#    url = api_server + AStar_port + '/astar/'
-    url = configs['api_server'] + configs['Astar_port'] + '/astar/'
+    url = configs['api_server'] + ":" + configs['Astar_port'] + '/astar/'
     payload = {
         'start': start,
         'goal': goal,
@@ -125,8 +124,7 @@ def call_astar_endpoint(start, goal, obstacles):
         raise Exception('A* path planning failed!')
 
 def call_rrt_endpoint(start, goal, obstacles):
-#    url = api_server + RRT_port + '/rrt/'
-    url = configs['api_server'] + configs['RRT_port'] + '/rrt/'
+    url = configs['api_server'] + ":" + configs['RRT_port'] + '/rrt/'
     payload = {
         'start': start,
         'goal': goal,
@@ -159,7 +157,9 @@ def main():
 
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='commands')
-#    parser.add_argument('--help')
+
+    # Optionally specify connection string
+    parser.add_argument('--connect')
 
     # use mission file or REST API mission query, but not both
     cmd_group = parser.add_mutually_exclusive_group(required=True)
@@ -168,49 +168,53 @@ def main():
 
     args = parser.parse_args()
 
-    # Connection configs
-    mission_file = args.mission
-    path_planning_type = args.model
-    connection_string = configs["transport"] + configs["sim_server"] + configs["sim_port"]
+    # connetion string
+    if not args.connect:
+        connection_string = configs["transport"] + ":" + configs["sim_server"] + ":" + configs["sim_port"]
+    else:
+        connection_string = args.connect
 
     logging.info(f"Connection String: {connection_string}")
-    logging.info(f"Mission File: {mission_file}")
-    logging.info(f"Path Planning Type: {path_planning_type}")
 
-    # start and goal
-    start = ast.literal_eval(configs['start'])
-    goal = ast.literal_eval(configs['goal'])
-    obstacles = ast.literal_eval(configs['obstacles'])
-
-    # Time the algorithms
-
+    # Time the mission planning algorithms
     start_time = time.time()
 
-    if mission_file:
-        mission_plan = sitl.read_mission_file(mission_file)
+    # Obatin Mission Plan 
+    # If mission plan file is already specified
+    if args.mission: 
+        mission_plan = sitl.read_mission_file(args.mission)
+        logging.info(f"Mission File: {args.mission}")
         print(mission_plan)
+    # Otherwise query REST API servers for mission plan
     else:
-        if path_planning_type == "DQN":
+        logging.info(f"Path Planning Model: {args.model}")
+
+        # start and goal
+        start = ast.literal_eval(configs['start'])
+        goal = ast.literal_eval(configs['goal'])
+        obstacles = ast.literal_eval(configs['obstacles'])
+
+        if args.model == "DQN":
             # Request DQN mission plan
             mission_plan = call_DQN_API(start, goal)
             print(mission_plan)
-        elif path_planning_type == "RRT":
+        elif args.model == "RRT":
             # Request RRT mission plan
             mission_plan = call_rrt_endpoint(start, goal, obstacles)
             [print(wp) for wp in mission_plan]
-        elif path_planning_type == "A*":
+        elif args.model == "ASTAR":
             # Request A* mission plan
             print("Sorry! A* Algorithm NOT implemented yet")
 #            mission_plan = call_astar_endpoint(start, goal, obstacles)
         else:
-            print(f"ERROR: Unknown Path Planning Type {path_planning_type}")
-            logging.error(f"ERROR: Unknown Path Planning Type {path_planning_type}")
+            print(f"ERROR: Unknown Path Planning Type {args.model}")
+            logging.error(f"ERROR: Unknown Path Planning Type {args.model}")
             raise Exception('Path planning type not supported')
 
     # Display time used to generate Mission Plan
     end_time = time.time()
     execution_time = end_time - start_time
-    logging.info(f"Mission Plan Generated in {execution_time:.3f} sec using {path_planning_type}")
+    logging.info(f"Mission Plan Generated in {execution_time:.3f} sec using {args.model}")
 
     # Execute Mission
     sitl.run_mission(connection_string, mission_plan)

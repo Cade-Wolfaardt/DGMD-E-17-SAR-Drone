@@ -3,17 +3,19 @@
 api_server=http://127.0.0.1
 
 # Default API server ports
-DQN_port=:5000
-AStar_port=:5010
-RRT_port=:5020
+DQN_port=5000
+AStar_port=5010
+RRT_port=5020
 
 # ArduPilot defaults
 # IP address of the server running ArduPilot and QGroundControl
-sim_server=1.13.181.58
+# sim_server=1.13.181.58
+sim_server=127.0.0.1
 # transport type: either udp or tcp
-transport=udp:
+transport=udpin
+baudrate=115200
 # Default port to upload mission and control drone with MAVLink commands
-sim_port=:14451
+sim_port=14451
 
 # Default start and goal geo coordinates + altitude
 # Change for different missions
