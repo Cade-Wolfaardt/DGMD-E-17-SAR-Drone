@@ -59,16 +59,16 @@ def path_to_mission(path):
     mission.append("QGC WPL 110")
 
     # take-off command
-    print(f"0\t1\t0\t22\t0\t0\t0\t0\t{path[0][0]:.6f}\t{path[0][1]:.6f}\t{take_off_altitude}\t1")
+    #print(f"0\t1\t0\t22\t0\t0\t0\t0\t{path[0][0]:.6f}\t{path[0][1]:.6f}\t{take_off_altitude}\t1")
     mission.append(f"0\t1\t0\t22\t0\t0\t0\t0\t{path[0][0]:.6f}\t{path[0][1]:.6f}\t{take_off_altitude}\t1")
 
     # Waypoints
     for index, point in enumerate(path, start=1):
-        print(f"{index}\t0\t3\t{wp_type}\t0\t0\t0\t0\t{point[0]:.6f}\t{point[1]:.6f}\t{point[2]:.1f}\t1")
+    #    print(f"{index}\t0\t3\t{wp_type}\t0\t0\t0\t0\t{point[0]:.6f}\t{point[1]:.6f}\t{point[2]:.1f}\t1")
         mission.append(f"{index}\t0\t3\t{wp_type}\t0\t0\t0\t0\t{point[0]:.6f}\t{point[1]:.6f}\t{point[2]:.1f}\t1")
 
     # RTL landing
-    print(f"{len(path)+1}\t0\t3\t20\t0\t0\t0\t0\t{path[0][0]:.6f}\t{path[0][1]:.6f}\t{path[0][2]:.1f}\t1")
+    #print(f"{len(path)+1}\t0\t3\t20\t0\t0\t0\t0\t{path[0][0]:.6f}\t{path[0][1]:.6f}\t{path[0][2]:.1f}\t1")
     mission.append(f"{len(path)+1}\t0\t3\t20\t0\t0\t0\t0\t{path[0][0]:.6f}\t{path[0][1]:.6f}\t{path[0][2]:.1f}\t1")
 
     return mission
