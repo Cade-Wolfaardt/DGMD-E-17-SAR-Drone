@@ -53,12 +53,29 @@ def read_mission_file(filename: str) -> list:
 
 # Upload mission MAVLink command list to drone
 def upload_mission(vehicle, mission):
-    logging.debug(mission)
     mission_items = []
+    logging.info(f"Uploading Mission with {len(mission) -1} commands:")
+    
+    # confirm the mission has the right header
+    assert mission[0] == "QGC WPL 110" 
 
     # convert mission into MAVLink commands
-    for line in mission:
+    for _, line in enumerate(mission):
+        # skips the first line
+        if line.startswith("QGC"):
+            continue
+
         parts = line.split('\t')
+        # logging.debug(parts)
+
+        # the first command MUST be takeoff
+        if int(parts[0]) == 0:
+            assert int(parts[3]) == 22
+        # the last command MUST be landing
+        elif parts[0] == len(mission) - 2:
+            assert int(parts[3]) == 20
+
+        # add each command to mission command list
         lat, lon, alt = map(float, parts[8:11])
         seq = int(parts[0])
         frame = int(parts[2])
@@ -67,19 +84,24 @@ def upload_mission(vehicle, mission):
                 vehicle.target_system, vehicle.target_component, seq, frame,
                 command, 0, 0, 0, 0, 0, 0, lat, lon, alt))
 
-        vehicle.mav.mission_count_send(vehicle.target_system, vehicle.target_component, len(mission_items))
 
-        for i, item in enumerate(mission_items):
-            msg = vehicle.recv_match(type='MISSION_REQUEST', blocking=True)
-            vehicle.mav.send(item)
+    # send over mission command list count first
+    vehicle.mav.mission_count_send(vehicle.target_system, vehicle.target_component, len(mission_items))
 
-        msg = vehicle.recv_match(type='MISSION_ACK', blocking=True)
-        if msg.type == mavutil.mavlink.MAV_MISSION_ACCEPTED:
-            print("Mission upload SUCCESS!")
-        else:
-            print("Mission upload FAILED!")
+    # send over mission commands
+    for i, item in enumerate(mission_items):
+        msg = vehicle.recv_match(type='MISSION_REQUEST', blocking=True)
+        vehicle.mav.send(item)
 
-        return len(mission_items)
+    # See if mission upload complete
+    msg = vehicle.recv_match(type='MISSION_ACK', blocking=True)
+
+    if msg.type == mavutil.mavlink.MAV_MISSION_ACCEPTED:
+        print("Mission upload SUCCESS!")
+    else:
+        print("Mission upload FAILED!")
+
+    return len(mission_items)
 
 
 # Arm and take off the drone

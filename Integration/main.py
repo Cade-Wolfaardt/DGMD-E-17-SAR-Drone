@@ -196,12 +196,12 @@ def main():
 
         if args.model == "DQN":
             # Request DQN mission plan
-            mission_plan = call_DQN_API(start, goal)
-            print(mission_plan)
+            mission_plan = call_DQN_API(start, goal).splitlines()
+            #[print(wp) for wp in mission_plan]
         elif args.model == "RRT":
             # Request RRT mission plan
             mission_plan = call_rrt_endpoint(start, goal, obstacles)
-            [print(wp) for wp in mission_plan]
+            #[print(wp) for wp in mission_plan]
         elif args.model == "ASTAR":
             # Request A* mission plan
             print("Sorry! A* Algorithm NOT implemented yet")
@@ -216,8 +216,14 @@ def main():
     execution_time = end_time - start_time
     logging.info(f"Mission Plan Generated in {execution_time:.3f} sec using {args.model}")
 
-    # Execute Mission
+    # Execute and Time the Mission
+    start_time = time.time()
     sitl.run_mission(connection_string, mission_plan)
+
+    # Display time used to generate Mission Plan
+    end_time = time.time()
+    execution_time = end_time - start_time
+    logging.info(f"{args.model} Mission Executed in {execution_time:.3f} sec")
 
 
 if __name__ == '__main__':
