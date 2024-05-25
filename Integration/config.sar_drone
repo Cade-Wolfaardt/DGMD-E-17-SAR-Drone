@@ -13,14 +13,15 @@ RRT_port=5020
 sim_server=127.0.0.1
 # transport type: either udp or tcp
 transport=udpin
-baudrate=115200
+baudrate=230400
 # Default port to upload mission and control drone with MAVLink commands
-sim_port=14451
+sim_port=14551
 
 # Default start and goal geo coordinates + altitude
 # Change for different missions
-start=(42.355118, -71.071305, 6)
-goal=(42.355280, -71.070911, 26.5)
+start=(42.355118, -71.071305, 6)  # original start coords
+#goal=(42.355280, -71.070911, 26.5)  # original goal coords
+goal=(42.355880, -71.070111, 26.5)
 
 # obstacle list (obstacles are all represented as spheres in space)
 # format: (latitude, longitude, altitude), radius)
