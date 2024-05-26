@@ -20,8 +20,9 @@ sim_port=14551
 
 # Default start and goal geo coordinates + altitude
 # Change for different missions
-start=(42.355118, -71.071305, 6)
-goal=(42.355280, -71.070911, 26.5)
+start=(42.355118, -71.071305, 6)  # default start point
+goal=(42.355280, -71.070911, 26.5)  # default goal 
+# goal=(42.356280, -71.073911, 36.5)
 
 # obstacle list (obstacles are all represented as spheres in space)
 # format: (latitude, longitude, altitude), radius)

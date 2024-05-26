@@ -1,10 +1,17 @@
 import requests
 import os
+import sys
 import ast
 import time
 import argparse
 import pymavlink_SITL as sitl
 import logging
+
+# Add the RRT to the sys.path
+sys.path.append(os.path.abspath('../RRT'))
+
+# Now you can import your module
+import path_planning_utils as ppu
 
 # Set up basic configuration for logging
 logging.basicConfig(level=logging.DEBUG, filename='sar_drone.log', filemode='w',
@@ -25,7 +32,7 @@ def read_config_file(config_file_path: str) -> dict:
                     key, value = line.split('=', 1)
                     config_data[key] = value
 
-        logging.info(f"Config File: {config_data}")
+        # logging.info(f"Config File: {config_data}")
         return config_data
     else:
         logging.warning(f"Configuration file {config_file_path} does not exist.")
@@ -176,9 +183,6 @@ def main():
 
     logging.info(f"Connection String: {connection_string}")
 
-    # Time the mission planning algorithms
-    start_time = time.time()
-
     # Obatin Mission Plan 
     # If mission plan file is already specified
     if args.mission: 
@@ -187,34 +191,35 @@ def main():
         print(mission_plan)
     # Otherwise query REST API servers for mission plan
     else:
-        logging.info(f"Path Planning Model: {args.model}")
-
         # start and goal
         start = ast.literal_eval(configs['start'])
         goal = ast.literal_eval(configs['goal'])
         obstacles = ast.literal_eval(configs['obstacles'])
 
-        if args.model == "DQN":
-            # Request DQN mission plan
+        # Diagnostic info
+        logging.info(f"Goal is {ppu.llh_to_meters(start, goal)[1]:.3f} meters from start")
+        logging.info(f"Path Planning Model: {args.model}")
+
+        # Time the mission planning algorithms
+        start_time = time.time()
+
+        if args.model == "DQN":  # Request DQN mission plan
             mission_plan = call_DQN_API(start, goal).splitlines()
-            #[print(wp) for wp in mission_plan]
-        elif args.model == "RRT":
-            # Request RRT mission plan
+        elif args.model == "RRT":  # Request RRT mission plan
             mission_plan = call_rrt_endpoint(start, goal, obstacles)
-            #[print(wp) for wp in mission_plan]
-        elif args.model == "ASTAR":
-            # Request A* mission plan
+        elif args.model == "ASTAR":  # Request A* mission plan
             print("Sorry! A* Algorithm NOT implemented yet")
-#            mission_plan = call_astar_endpoint(start, goal, obstacles)
+            # mission_plan = call_astar_endpoint(start, goal, obstacles)
         else:
             print(f"ERROR: Unknown Path Planning Type {args.model}")
             logging.error(f"ERROR: Unknown Path Planning Type {args.model}")
             raise Exception('Path planning type not supported')
 
-    # Display time used to generate Mission Plan
-    end_time = time.time()
-    execution_time = end_time - start_time
-    logging.info(f"Mission Plan Generated in {execution_time:.3f} sec using {args.model}")
+        # Display time used to generate Mission Plan
+        end_time = time.time()
+        execution_time = end_time - start_time
+        logging.info(f"{args.model} Mission Plan Generated in {execution_time:.3f} sec")
+        # [print(wp) for wp in mission_plan]
 
     # Execute and Time the Mission
     start_time = time.time()
