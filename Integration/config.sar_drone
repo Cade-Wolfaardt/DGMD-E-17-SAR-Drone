@@ -1,6 +1,7 @@
 # Web address for the DQN Flask server and RRT FastAPI server
 # These two services must be on the same IP address
 api_server=http://127.0.0.1
+#api_server=http://1.13.181.58
 
 # Default API server ports
 DQN_port=5000
@@ -19,9 +20,9 @@ sim_port=14551
 
 # Default start and goal geo coordinates + altitude
 # Change for different missions
-start=(42.355118, -71.071305, 6)  # original start coords
-#goal=(42.355280, -71.070911, 26.5)  # original goal coords
-goal=(42.355880, -71.070111, 26.5)
+start=(42.355118, -71.071305, 6)  # default start point
+goal=(42.355280, -71.070911, 26.5)  # default goal 
+# goal=(42.356280, -71.073911, 36.5)
 
 # obstacle list (obstacles are all represented as spheres in space)
 # format: (latitude, longitude, altitude), radius)
