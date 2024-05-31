@@ -8,8 +8,9 @@ The RRT algorithm helps in navigating complex environments by efficiently search
 
 ## Files
 
-- `rrt.py`: Contains the RRT algorithm implementation.
-- `utils.py`: Helper functions that support the RRT algorithm.
+- `rrt_3d_fastapi.py`: Contains the RRT algorithm implementation.
+- `path_planning_utils.py`: Helper functions that support the RRT algorithm.
+
 
 ## Requirements
 

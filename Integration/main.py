@@ -219,11 +219,18 @@ def main():
         end_time = time.time()
         execution_time = end_time - start_time
         logging.info(f"{args.model} Mission Plan Generated in {execution_time:.3f} sec")
-        # [print(wp) for wp in mission_plan]
+
+        # Print out mission
+        [print(wp) for wp in mission_plan]
 
     # Execute and Time the Mission
     start_time = time.time()
     sitl.run_mission(connection_string, mission_plan)
+
+    # Display time used to generate Mission Plan
+    end_time = time.time()
+    execution_time = end_time - start_time
+    logging.info(f"{args.model} Mission Executed in {execution_time:.3f} sec")
 
     # Display time used to generate Mission Plan
     end_time = time.time()

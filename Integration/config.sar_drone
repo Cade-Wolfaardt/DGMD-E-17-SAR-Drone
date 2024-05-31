@@ -10,7 +10,7 @@ RRT_port=5020
 
 # ArduPilot defaults
 # IP address of the server running ArduPilot and QGroundControl
-#sim_server=1.13.181.58
+# sim_server=1.13.181.58
 sim_server=127.0.0.1
 # transport type: either udp or tcp
 transport=udpin
