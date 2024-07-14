@@ -202,14 +202,17 @@ def main():
 
         # Time the mission planning algorithms
         start_time = time.time()
+        print(f"{start_time}: Path Planning Requested {args.model}")
 
         if args.model == "DQN":  # Request DQN mission plan
             mission_plan = call_DQN_API(start, goal).splitlines()
         elif args.model == "RRT":  # Request RRT mission plan
             mission_plan = call_rrt_endpoint(start, goal, obstacles)
         elif args.model == "ASTAR":  # Request A* mission plan
-            print("Sorry! A* Algorithm NOT implemented yet")
             # mission_plan = call_astar_endpoint(start, goal, obstacles)
+            print("Sorry! A* Algorithm NOT implemented yet")
+            logging.error(f"ERROR: Unsupported Path Planning Type {args.model}")
+            raise Exception('Path planning type not supported')
         else:
             print(f"ERROR: Unknown Path Planning Type {args.model}")
             logging.error(f"ERROR: Unknown Path Planning Type {args.model}")

@@ -1,7 +1,7 @@
 # Web address for the DQN Flask server and RRT FastAPI server
 # These two services must be on the same IP address
-api_server=http://127.0.0.1
-#api_server=http://1.13.181.58
+#api_server=http://127.0.0.1
+api_server=http://1.13.181.58
 
 # Default API server ports
 DQN_port=5000
@@ -10,11 +10,11 @@ RRT_port=5020
 
 # ArduPilot defaults
 # IP address of the server running ArduPilot and QGroundControl
-# sim_server=1.13.181.58
-sim_server=127.0.0.1
+sim_server=1.13.181.58
+#sim_server=127.0.0.1
 # transport type: either udp or tcp
-transport=udpin
-baudrate=230400
+transport=udp
+#baudrate=230400
 # Default port to upload mission and control drone with MAVLink commands
 sim_port=14551
 
