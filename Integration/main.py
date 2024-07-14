@@ -113,7 +113,7 @@ def call_DQN_API(start, goal):
 
 # Call the A* FastAPI
 def call_astar_endpoint(start, goal, obstacles):
-    url = configs['api_server'] + ":" + configs['Astar_port'] + '/astar/'
+    url = configs['api_server'] + ":" + configs['Astar_port'] + '/astar'
     payload = {
         'start': start,
         'goal': goal,
@@ -131,7 +131,7 @@ def call_astar_endpoint(start, goal, obstacles):
         raise Exception('A* path planning failed!')
 
 def call_rrt_endpoint(start, goal, obstacles):
-    url = configs['api_server'] + ":" + configs['RRT_port'] + '/rrt/'
+    url = configs['api_server'] + ":" + configs['RRT_port'] + '/rrt'
     payload = {
         'start': start,
         'goal': goal,
