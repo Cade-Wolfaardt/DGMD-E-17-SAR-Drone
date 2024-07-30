@@ -4,7 +4,8 @@
 api_server=http://1.13.181.58
 
 # Default API server ports
-DQN_port=5000
+#DQN_port=5000
+DQN_port=8008
 AStar_port=5010
 RRT_port=5020
 

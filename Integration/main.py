@@ -57,7 +57,8 @@ def set_start(start: tuple, goal: tuple) -> None:
     logging.debug(f"DQN Go to: {goal}")
 
     # Construct the URL with start and goal parameters
-    extension = '/assign-start-goal?start={}_{}_{}&goal={}_{}_{}'
+    #extension = '/assign-start-goal?start={}_{}_{}&goal={}_{}_{}'
+    extension = '/v1/pathplan/dqn/assign-start-goal?start={}_{}_{}&goal={}_{}_{}'
     url = configs['api_server'] + ":" + configs['DQN_port'] + extension.format(*start, *goal)
     logging.debug(f"Main DQN Request: {url}")
 
@@ -83,8 +84,9 @@ def get_path_from_api() -> str:
     - str: Path content retrieved from the API.
     """
     # Make a GET request to the API endpoint
-#    response = requests.get(api_server + DQN_port + '/get-path')
-    response = requests.get(configs['api_server'] + ":" + configs['DQN_port'] + '/get-path') 
+    # end_point = '/get-path'
+    end_point = '/v1/pathplan/dqn/get-path'
+    response = requests.get(configs['api_server'] + ":" + configs['DQN_port'] + end_point)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 201:
@@ -113,7 +115,7 @@ def call_DQN_API(start, goal):
 
 # Call the A* FastAPI
 def call_astar_endpoint(start, goal, obstacles):
-    url = configs['api_server'] + ":" + configs['Astar_port'] + '/astar/'
+    url = configs['api_server'] + ":" + configs['Astar_port'] + '/astar'
     payload = {
         'start': start,
         'goal': goal,
@@ -130,13 +132,27 @@ def call_astar_endpoint(start, goal, obstacles):
         logging.error("A* Route Request Failed! Status Code:", response.status_code)
         raise Exception('A* path planning failed!')
 
+
 def call_rrt_endpoint(start, goal, obstacles):
-    url = configs['api_server'] + ":" + configs['RRT_port'] + '/rrt/'
+    # construct REST API call
+    end_point = '/rrt'
+    url = configs['api_server'] + ":" + configs['RRT_port'] + end_point
     payload = {
         'start': start,
         'goal': goal,
         'obstacles': obstacles
     }
+
+    # test KrakenD REST API
+    end_point = '/v1/pathplan/rrt'
+    RRT_port = '8008'
+    url = configs['api_server'] + ":" + RRT_port + end_point
+    payload = {
+        'start': start,
+        'goal': goal,
+        'obstacles': obstacles
+    }
+
     logging.info(f"RRT API: {url}")
     logging.info(f"RRT Request: {payload}")
 
@@ -202,7 +218,8 @@ def main():
 
         # Time the mission planning algorithms
         start_time = time.time()
-        print(f"{start_time}: Path Planning Requested {args.model}")
+        local_time = time.localtime(start_time)
+        print(f"{time.strftime('%Y-%m-%d %H:%M:%S', local_time)}: Path Planning Requested {args.model}")
 
         if args.model == "DQN":  # Request DQN mission plan
             mission_plan = call_DQN_API(start, goal).splitlines()
