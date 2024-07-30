@@ -199,9 +199,9 @@ def main():
 
     logging.info(f"Connection String: {connection_string}")
 
-    # Obatin Mission Plan 
+    # Obatin Mission Plan
     # If mission plan file is already specified
-    if args.mission: 
+    if args.mission:
         mission_plan = sitl.read_mission_file(args.mission)
         logging.info(f"Mission File: {args.mission}")
         print(mission_plan)

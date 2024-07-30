@@ -2,6 +2,7 @@
 # or RRT probablistic algorithm
 
 from fastapi import FastAPI
+from urllib.parse import unquote
 from typing import List, Tuple
 import numpy as np
 import random as rd
@@ -78,12 +79,22 @@ def reconstruct_path(nodes, start_node, goal_node):
     return path
 
 
-@app.post("/rrt/")
-async def generate_rrt_path(start: Tuple[float, float, float], goal: Tuple[float, float, float], obstacles: List[Tuple[Tuple[float, float, float], float]]):
-# async def generate_rrt_path(start, goal, obstacles):
+@app.post("/rrt")
+#async def generate_rrt_path(start: Tuple[float, float, float], goal: Tuple[float, float, float], obstacles: List[Tuple[Tuple[float, float, float], float]]):
+async def generate_rrt_path(start, goal, obstacles):
     # Settings for RRT
     step_size = 1  # 1 meter
     max_iterations = 1000
+
+    # process params
+    print(f"input query strings {start}, {goal}, {obstacles}")
+    s = unquote(start)
+    g = unquote(goal)
+    o = unquote(obstacles)
+    print(f"URL decoded {s}, {g}, {o}")
+    start = tuple(s)
+    goal = tuple(g)
+    obstacles = list(tuple(tuple(o)))
 
     # Build the RRT and get nodes
     nodes = build_rrt_3d(start, goal, step_size, max_iterations, obstacles)
