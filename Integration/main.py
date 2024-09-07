@@ -137,16 +137,11 @@ def call_rrt_endpoint(start, goal, obstacles):
     # construct REST API call
     end_point = '/rrt'
     url = configs['api_server'] + ":" + configs['RRT_port'] + end_point
-    payload = {
-        'start': start,
-        'goal': goal,
-        'obstacles': obstacles
-    }
 
     # test KrakenD REST API
     end_point = '/v1/pathplan/rrt'
-    RRT_port = '8008'
-    url = configs['api_server'] + ":" + RRT_port + end_point
+    url = configs['api_server'] + ":" + configs['API_port'] + end_point
+
     payload = {
         'start': start,
         'goal': goal,

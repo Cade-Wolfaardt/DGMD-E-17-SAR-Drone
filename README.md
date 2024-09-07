@@ -7,3 +7,7 @@ The Team (in alphabetical order)
 - Cade Wolfaardt
 - Fenten Chance
 - Roger Zeng
+
+### INSTRUCTIONS
+
+Follow instructions in each of the sub folders
